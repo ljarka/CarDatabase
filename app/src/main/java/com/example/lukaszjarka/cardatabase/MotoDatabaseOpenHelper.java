@@ -1,8 +1,11 @@
 package com.example.lukaszjarka.cardatabase;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class MotoDatabaseOpenHelper extends SQLiteOpenHelper {
     private static int DATABASE_VERSION = 2;
@@ -24,6 +27,35 @@ public class MotoDatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+    }
+
+    public boolean insertCar(Car car) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CarsTableContract.COLUMN_MAKE, car.getMake());
+        contentValues.put(CarsTableContract.COLUMN_MODEL, car.getModel());
+        contentValues.put(CarsTableContract.COLUMN_IMAGE, car.getImage());
+        contentValues.put(CarsTableContract.COLUMN_YEAR, car.getYear());
+
+        long value = getWritableDatabase()
+                .insert(CarsTableContract.TABLE_NAME, null, contentValues);
+
+        return value != -1;
+    }
+
+    public Cursor getAllItems() {
+        Cursor cursor = getReadableDatabase()
+                .query(CarsTableContract.TABLE_NAME, null, null, null, null, null, null);
+        return cursor;
+    }
+
+    public Cursor searchQuery(CharSequence constraint) {
+        Cursor cursor = getReadableDatabase().query(CarsTableContract.TABLE_NAME,
+                null,
+                CarsTableContract.COLUMN_MAKE + " LIKE ?",
+                new String[]{
+                        constraint.toString() + "%"
+                }, null, null, null);
+        return cursor;
     }
 
     @Override
