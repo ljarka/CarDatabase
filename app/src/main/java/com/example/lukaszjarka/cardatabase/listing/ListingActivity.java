@@ -6,13 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.lukaszjarka.cardatabase.R;
+import com.example.lukaszjarka.cardatabase.details.DetailsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListingActivity extends AppCompatActivity {
+public class ListingActivity extends AppCompatActivity implements OnCarItemClickListener {
     private static final String QUERY = "query";
 
     @BindView(R.id.fragment_container)
@@ -38,5 +40,14 @@ public class ListingActivity extends AppCompatActivity {
         Intent intent = new Intent(context, ListingActivity.class);
         intent.putExtra(QUERY, query);
         return intent;
+    }
+
+    @Override
+    public void onCarItemClick(String id) {
+        Fragment fragment = DetailsFragment.getInstance(id);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }
