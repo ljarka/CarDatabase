@@ -20,6 +20,7 @@ import static butterknife.ButterKnife.findById;
 public class RecyclerViewCursorAdapter
         extends RecyclerView.Adapter<RecyclerViewCursorAdapter.ViewHolder> {
 
+    private OnCarItemClickListener onCarItemClickListener;
     private Cursor cursor;
 
     @Override
@@ -41,6 +42,15 @@ public class RecyclerViewCursorAdapter
         holder.makeAndModel.setText(make + " " + model);
         Glide.with(holder.imageView.getContext())
                 .load(imageUrl).into(holder.imageView);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onCarItemClickListener != null) {
+                    cursor.moveToPosition(position);
+                    onCarItemClickListener.onCarItemClick(cursor.getString(0));
+                }
+            }
+        });
     }
 
     @Override
@@ -51,6 +61,10 @@ public class RecyclerViewCursorAdapter
     public void setCursor(@Nullable Cursor cursor) {
         this.cursor = cursor;
         notifyDataSetChanged();
+    }
+
+    public void setOnCarItemClickListener(OnCarItemClickListener onCarItemClickListener) {
+        this.onCarItemClickListener = onCarItemClickListener;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
