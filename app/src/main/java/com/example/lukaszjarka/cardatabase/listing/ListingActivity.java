@@ -2,9 +2,12 @@ package com.example.lukaszjarka.cardatabase.listing;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -45,9 +48,18 @@ public class ListingActivity extends AppCompatActivity implements OnCarItemClick
     @Override
     public void onCarItemClick(String id) {
         Fragment fragment = DetailsFragment.getInstance(id);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detail_container, fragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment, ListingFragment.TAG)
+                    .addToBackStack(ListingFragment.TAG)
+                    .commit();
+        }
     }
 }

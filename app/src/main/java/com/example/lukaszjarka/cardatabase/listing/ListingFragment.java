@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ListingFragment extends Fragment {
+    public static final String TAG = ListingFragment.class.getSimpleName();
     private static final String QUERY_KEY = "query_key";
 
     @BindView(R.id.recyler_view)
