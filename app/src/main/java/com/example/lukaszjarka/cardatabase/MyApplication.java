@@ -9,8 +9,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this);
-        }
+        boolean isInDebug = BuildConfig.DEBUG;
+        Stetho.initializeWithDefaults(this);
     }
 }
