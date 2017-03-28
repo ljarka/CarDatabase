@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 autoCompleteTextView.setText(cursor.getString(cursor.getColumnIndex(CarsTableContract.COLUMN_MAKE)));
             }
         });
+
+
     }
 
     @OnClick(R.id.add_new_car)
