@@ -1,8 +1,10 @@
 package com.example.lukaszjarka.cardatabase;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FilterQueryProvider;
+import android.widget.Toast;
 
 import com.example.lukaszjarka.cardatabase.add.AddNewCarActivity;
 import com.example.lukaszjarka.cardatabase.listing.ListingActivity;
@@ -51,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @OnClick(R.id.run_content_provider)
+    void onRunContentProviderClick() {
+        Cursor cursor = getContentResolver().query(Uri.parse("content://com.example.lukaszjarka.cardatabase/CARS/1"),
+                null, null, null, null);
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CarsTableContract.COLUMN_MAKE, "Opel");
+        contentValues.put(CarsTableContract.COLUMN_MODEL, "Corsa");
+        contentValues.put(CarsTableContract.COLUMN_IMAGE, "");
+        contentValues.put(CarsTableContract.COLUMN_YEAR, 1989);
+        getContentResolver().insert(Uri.parse("content://com.example.lukaszjarka.cardatabase/CARS"), contentValues);
+        Toast.makeText(this, "" + cursor.getCount(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.add_new_car)
