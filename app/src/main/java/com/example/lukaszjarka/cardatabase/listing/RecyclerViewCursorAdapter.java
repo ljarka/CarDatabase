@@ -41,12 +41,12 @@ public class RecyclerViewCursorAdapter
         holder.makeAndModel.setText(make + " " + model);
         Glide.with(holder.imageView.getContext())
                 .load(imageUrl).into(holder.imageView);
+        String id = cursor.getString(0);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onCarItemClickListener != null) {
-                    cursor.moveToPosition(position);
-                    onCarItemClickListener.onCarItemClick(cursor.getString(0));
+                    onCarItemClickListener.onCarItemClick(id);
                 }
             }
         });
@@ -54,9 +54,8 @@ public class RecyclerViewCursorAdapter
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor.moveToPosition(position);
                 if (onDeleteButtonClickListener != null) {
-                    lastDeletedItemId = cursor.getString(0);
+                    lastDeletedItemId = id;
                     onDeleteButtonClickListener.onDeleteButtonClick(lastDeletedItemId);
                 }
             }
