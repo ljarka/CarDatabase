@@ -8,6 +8,9 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -17,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.lukaszjarka.cardatabase.add.AddNewCarActivity;
 import com.example.lukaszjarka.cardatabase.listing.ListingActivity;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
         databaseOpenHelper = new MotoDatabaseOpenHelper(this);
 
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.run_content_provider)
-    void onRunContentProviderClick() {
+    void onRunContentProviderClick(View view) {
         Cursor cursor = getContentResolver().query(Uri.parse("content://com.example.lukaszjarka.cardatabase/CARS/1"),
                 null, null, null, null);
 

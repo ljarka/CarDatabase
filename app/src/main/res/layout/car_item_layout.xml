@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/placeholder_image" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_toRightOf="@+id/image"
-        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/placeholder_image" />
 
-        <TextView
-            android:id="@+id/make_and_model"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Opel Astra" />
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/image"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Rocznik: 1989" />
+            <TextView
+                android:id="@+id/make_and_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Opel Astra" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Rocznik: 1989" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/delete_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_delete_forever" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

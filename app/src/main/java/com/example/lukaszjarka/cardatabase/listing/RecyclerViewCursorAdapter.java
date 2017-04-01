@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.lukaszjarka.cardatabase.CarsTableContract;
 import com.example.lukaszjarka.cardatabase.R;
 
-import butterknife.ButterKnife;
-
 import static butterknife.ButterKnife.findById;
 
 public class RecyclerViewCursorAdapter
@@ -22,6 +20,7 @@ public class RecyclerViewCursorAdapter
 
     private OnCarItemClickListener onCarItemClickListener;
     private Cursor cursor;
+    private OnDeleteButtonClickListener onDeleteButtonClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,6 +50,16 @@ public class RecyclerViewCursorAdapter
                 }
             }
         });
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cursor.moveToPosition(position);
+                if (onDeleteButtonClickListener != null) {
+                    onDeleteButtonClickListener.onDeleteButtonClick(cursor.getString(0));
+                }
+            }
+        });
     }
 
     @Override
@@ -59,8 +68,15 @@ public class RecyclerViewCursorAdapter
     }
 
     public void setCursor(@Nullable Cursor cursor) {
+        if (this.cursor != null) {
+            this.cursor.close();
+        }
         this.cursor = cursor;
         notifyDataSetChanged();
+    }
+
+    public void setOnDeleteButtonClickListener(OnDeleteButtonClickListener onDeleteButtonClickListener) {
+        this.onDeleteButtonClickListener = onDeleteButtonClickListener;
     }
 
     public void setOnCarItemClickListener(OnCarItemClickListener onCarItemClickListener) {
@@ -74,11 +90,14 @@ public class RecyclerViewCursorAdapter
 
         TextView year;
 
+        ImageView deleteButton;
+
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = findById(itemView, R.id.image);
             makeAndModel = (TextView) itemView.findViewById(R.id.make_and_model);
             year = findById(itemView, R.id.year);
+            deleteButton = (ImageView) itemView.findViewById(R.id.delete_button);
         }
     }
 

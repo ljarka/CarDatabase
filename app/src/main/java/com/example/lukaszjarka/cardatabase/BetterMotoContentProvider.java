@@ -95,11 +95,47 @@ public class BetterMotoContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int deletedItems = 0;
+        SQLiteDatabase writableDatabase = openHelper.getWritableDatabase();
+
+        switch (uriMatcher.match(uri)) {
+            case CAR_SINGLE_ITEM: {
+                deletedItems = writableDatabase.delete(CarsTableContract.TABLE_NAME,
+                        CarsTableContract._ID + " = ?",
+                        new String[]{uri.getLastPathSegment()});
+                break;
+            }
+            case CAR_MULTIPLE_ITEM: {
+                deletedItems = writableDatabase.delete(CarsTableContract.TABLE_NAME,
+                        selection, selectionArgs);
+                break;
+            }
+
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return deletedItems;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int updatedItems = 0;
+        SQLiteDatabase writableDatabase = openHelper.getWritableDatabase();
+        switch (uriMatcher.match(uri)) {
+            case CAR_SINGLE_ITEM: {
+                updatedItems = writableDatabase.update(CarsTableContract.TABLE_NAME,
+                        values, CarsTableContract._ID + " = ?",
+                        new String[]{uri.getLastPathSegment()});
+                break;
+            }
+            case CAR_MULTIPLE_ITEM: {
+                updatedItems = writableDatabase.update(CarsTableContract.TABLE_NAME,
+                        values, selection, selectionArgs);
+                break;
+            }
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return updatedItems;
     }
 }

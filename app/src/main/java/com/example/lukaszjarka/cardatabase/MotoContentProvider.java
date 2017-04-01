@@ -67,6 +67,9 @@ public class MotoContentProvider extends ContentProvider {
         if (uriMatcher.match(uri) == SINGLE_ITEM) {
             deletedItems = writableDatabase.delete(CarsTableContract.TABLE_NAME,
                     CarsTableContract._ID + " = ?", new String[]{uri.getLastPathSegment()});
+        } else if (uriMatcher.match(uri) == MULTIPLE_ITEMS) {
+            deletedItems = writableDatabase.delete(CarsTableContract.TABLE_NAME,
+                    selection, selectionArgs);
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
