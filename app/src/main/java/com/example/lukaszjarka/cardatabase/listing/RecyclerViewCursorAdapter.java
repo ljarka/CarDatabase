@@ -17,7 +17,7 @@ import static butterknife.ButterKnife.findById;
 
 public class RecyclerViewCursorAdapter
         extends RecyclerView.Adapter<RecyclerViewCursorAdapter.ViewHolder> {
-
+    private String lastDeletedItemId = "";
     private OnCarItemClickListener onCarItemClickListener;
     private Cursor cursor;
     private OnDeleteButtonClickListener onDeleteButtonClickListener;
@@ -56,7 +56,8 @@ public class RecyclerViewCursorAdapter
             public void onClick(View v) {
                 cursor.moveToPosition(position);
                 if (onDeleteButtonClickListener != null) {
-                    onDeleteButtonClickListener.onDeleteButtonClick(cursor.getString(0));
+                    lastDeletedItemId = cursor.getString(0);
+                    onDeleteButtonClickListener.onDeleteButtonClick(lastDeletedItemId);
                 }
             }
         });
@@ -68,11 +69,33 @@ public class RecyclerViewCursorAdapter
     }
 
     public void setCursor(@Nullable Cursor cursor) {
+        int lastDeletedItemPosition = 0;
+        boolean shouldNotifyOnlyOneItem = false;
+
+        if (this.cursor != null && cursor != null) {
+            if (cursor.getCount() + 1 == this.cursor.getCount()) {
+                this.cursor.moveToFirst();
+
+                do {
+                    if (lastDeletedItemId.equals(this.cursor.getString(0))) {
+                        lastDeletedItemPosition = this.cursor.getPosition();
+                    }
+                } while (this.cursor.moveToNext());
+
+                shouldNotifyOnlyOneItem = true;
+            }
+        }
+
         if (this.cursor != null) {
             this.cursor.close();
         }
         this.cursor = cursor;
-        notifyDataSetChanged();
+
+        if (shouldNotifyOnlyOneItem) {
+            notifyItemRemoved(lastDeletedItemPosition);
+        } else {
+            notifyDataSetChanged();
+        }
     }
 
     public void setOnDeleteButtonClickListener(OnDeleteButtonClickListener onDeleteButtonClickListener) {
